@@ -31,6 +31,8 @@ class BERT_ONNXRuntime_SUT():
         self.profile = args.profile
         self.options = onnxruntime.SessionOptions()
         self.options.enable_profiling = args.profile
+        self.options.intra_op_num_threads = int(args.thcount)
+        self.options.execution_mode = onnxruntime.ExecutionMode.ORT_SEQUENTIAL
 
         print("Loading ONNX model...")
         self.quantized = args.quantized
