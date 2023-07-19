@@ -103,10 +103,7 @@ def main():
     print("Running LoadGen test...")
     lg.StartTestWithLogSettings(sut.sut, sut.qsl.qsl, settings, log_settings)
     if args.accuracy and not os.environ.get("SKIP_VERIFY_ACCURACY"):
-        cmd = "python3 {:}/accuracy-squad.py {}".format(
-            os.path.dirname(os.path.abspath(__file__)),
-            '--max_examples {}'.format(
-                args.max_examples) if args.max_examples else '')
+        cmd = "python3 {:}/accuracy-squad.py {} {}".format(os.path.dirname(os.path.abspath(__file__)), '--max_examples {}'.format(args.max_examples) if args.max_examples else '','--thcount={}'.format(args.thcount) if args.thcount else '')
         subprocess.check_call(cmd, shell=True)
 
     print("Done!")
