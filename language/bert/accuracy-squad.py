@@ -377,8 +377,6 @@ def main():
         "--vocab_file", default="build/data/bert_tf_v1_1_large_fp32_384_v2/vocab.txt", help="Path to vocab.txt")
     parser.add_argument(
         "--val_data", default="build/data/dev-v1.1.json", help="Path to validation data")
-    parser.add_argument("--log_file", default="build/logs/mlperf_log_accuracy.json",
-                        help="Path to LoadGen accuracy log")
     parser.add_argument("--out_file", default="build/result/predictions.json",
                         help="Path to output predictions file")
     parser.add_argument("--features_cache_file",
@@ -389,7 +387,12 @@ def main():
                         choices=dtype_map.keys(), help="Output data type")
     parser.add_argument("--max_examples", type=int,
                         help="Maximum number of examples to consider (not limited by default)")
+    parser.add_argument("--thcount", type=int,
+                        help="Maximum number of threads")
+    parser.add_argument("--log_file", default="build/logs/mlperf_log_accuracy.json",
+                        help="Path to LoadGen accuracy log")
     args = parser.parse_args()
+    
 
     output_dtype = dtype_map[args.output_dtype]
 
@@ -431,7 +434,7 @@ def main():
 
     print("Loading LoadGen logs...")
     results = load_loadgen_log(
-        args.log_file, eval_features, output_dtype, args.output_transposed)
+        "build/logs{}/mlperf_log_accuracy.json".format(args.thcount), eval_features, output_dtype, args.output_transposed)
 
     print("Post-processing predictions...")
     write_predictions(eval_examples, eval_features, results,
