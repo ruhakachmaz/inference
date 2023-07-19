@@ -41,6 +41,8 @@ def get_args():
                         help="user config for user LoadGen settings such as target QPS")
     parser.add_argument("--max_examples", type=int,
                         help="Maximum number of examples to consider (not limited by default)")
+    parser.add_argument("--thcount", type=int,
+                        help="Maximum number of threads")
     args = parser.parse_args()
     return args
 
@@ -88,7 +90,7 @@ def main():
         settings.mode = lg.TestMode.PerformanceOnly
     log_path = os.environ.get("LOG_PATH")
     if not log_path:
-        log_path = "build/logs"
+        log_path = "build/logs{}".format(args.thcount)
     if not os.path.exists(log_path):
         os.makedirs(log_path)
     log_output_settings = lg.LogOutputSettings()
